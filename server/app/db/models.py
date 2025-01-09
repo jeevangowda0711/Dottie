@@ -1,1 +1,5 @@
-# Data models\n# TODO: Define Pydantic models for request and response validation
+from pydantic import BaseModel
+
+class User(BaseModel):
+    email: str
+    hashed_password: str

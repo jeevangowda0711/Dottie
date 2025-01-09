@@ -1,1 +1,31 @@
-# Python dependencies\n# TODO: Add required libraries (e.g., FastAPI, Neo4j, etc.)
+# Python dependencies
+
+# FastAPI for building APIs
+fastapi
+
+# Uvicorn for ASGI server
+uvicorn[standard]
+
+# Neo4j Python driver for database connection
+neo4j
+
+# Pydantic for data validation
+pydantic
+
+# Pydantic Settings for configuration management
+pydantic-settings
+
+# Python-dotenv for loading environment variables
+python-dotenv
+
+# Passlib for password hashing
+passlib[bcrypt]
+
+# PyJWT for JWT token creation and validation
+pyjwt
+
+# Requests for making HTTP requests (if needed)
+requests
+
+# Python-Jose for JWT handling
+python-jose

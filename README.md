@@ -118,3 +118,13 @@ Contributions are welcome! Please fork the repository and submit a pull request.
 ### License
 
 This project is licensed under the MIT License.
+
+## Research Resources
+
+https://www.acog.org/clinical/clinical-guidance/committee-opinion/articles/2015/12/menstruation-in-girls-and-adolescents-using-the-menstrual-cycle-as-a-vital-sign
+
+### Resources
+
+https://docs.google.com/document/d/1ywyorf9YV1EZs2CjX3UxEw-BmWEca7FdP60b9jQ9VT4/edit?tab=t.0#heading=h.8ahwpe5c65y4
+
+https://docs.google.com/document/d/1Vqu8Sph3sco7j_tOZVmnkNW_YIm0MhBEwJKFxqTO9gU/edit?tab=t.0#heading=h.spbkur2dd5h2

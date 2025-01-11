@@ -1,10 +1,6 @@
-//go:build !js
-// +build !js
-
 package main
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/hypermodeinc/modus/sdk/go/pkg/neo4j"
@@ -14,9 +10,9 @@ type Symptom struct {
 	Name string `json:"name"`
 }
 
-func GetSymptomByName(ctx context.Context, name string) (Symptom, error) {
-	query := "MATCH (s:Symptom {name: $name}) RETURN s.name as name"
-	params := map[string]any{
+func GetSymptomByName(name string) (Symptom, error) {
+	query := "MATCH (s:Symptom {name: $name}) RETURN s.name AS name"
+	params := map[string]interface{}{
 		"name": name,
 	}
 
@@ -27,21 +23,21 @@ func GetSymptomByName(ctx context.Context, name string) (Symptom, error) {
 	}
 
 	if len(result.Records) == 0 {
-		return Symptom{}, fmt.Errorf("symptom not found")
+		return Symptom{}, fmt.Errorf("no records found")
 	}
 
-	symptomName, err := result.Records[0].Get("name")
-	if err != nil {
-		return Symptom{}, fmt.Errorf("failed to get symptom name: %w", err)
+	// Correct handling of result.Records[0].Get
+	value, exists := result.Records[0].Get("name")
+	if !exists {
+		return Symptom{}, fmt.Errorf("failed to get symptom name: field 'name' not found")
 	}
 
-	return Symptom{Name: symptomName}, nil
+	return Symptom{Name: value}, nil
 }
 
 func main() {
 	// Example usage
-	ctx := context.Background()
-	symptom, err := GetSymptomByName(ctx, "Cough")
+	symptom, err := GetSymptomByName("Cough")
 	if err != nil {
 		fmt.Println("Error:", err)
 	} else {

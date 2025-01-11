@@ -1,0 +1,7 @@
+type Query {
+    getSymptomByName(name: String!): Symptom
+}
+
+type Symptom {
+    name: String!
+}

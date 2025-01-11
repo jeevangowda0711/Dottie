@@ -1,0 +1,19 @@
+{
+    "$schema": "https://schema.hypermode.com/modus.json",
+    "connections": {
+      "my-neo4j": {
+        "type": "neo4j",
+        "dbUri": "bolt://localhost:7687",
+        "username": "neo4j",
+        "password": "{{NEO4J_PASSWORD}}"
+      }
+    },
+    "endpoints": {
+      "default": {
+        "type": "graphql",
+        "path": "/graphql",
+        "auth": "bearer-token"
+      }
+    }
+  }
+  

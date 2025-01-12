@@ -3,6 +3,6 @@
 
 package main
 
-func main() {
+func dummyMain() {
 	// No-op for WASM builds
 }

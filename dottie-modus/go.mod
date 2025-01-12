@@ -1,4 +1,4 @@
-module dottie-modus
+module github.com/jeevangowda0711/Dottie/dottie-modus
 
 go 1.23.4
 

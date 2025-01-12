@@ -23,12 +23,12 @@ type GeminiService struct{}
 
 // AnalyzeSymptoms simulates advanced analysis via the Gemini service.
 // Replace this stub with your actual logic.
-func (g *GeminiService) AnalyzeSymptoms(input SymptomInput, contexts []string) (string, error) {
+func (g *GeminiService) AnalyzeSymptoms(input SymptomInput, contexts []string) ([]map[string]interface{}, error) {
 	// Implement the logic to analyze symptoms using Gemini
 	ctx := context.Background()
-	client, err := genai.NewClient(ctx, option.WithAPIKey("Your API Key"))
+	client, err := genai.NewClient(ctx, option.WithAPIKey("Your Key"))
 	if err != nil {
-		return "", errors.New("Issue in error")
+		return nil, errors.New("Issue in error")
 	}
 	model := client.GenerativeModel("gemini-1.5-flash-8b")
 	model.SetTemperature(1)        // Controls randomness (0-1)
@@ -44,7 +44,7 @@ func (g *GeminiService) AnalyzeSymptoms(input SymptomInput, contexts []string) (
 	}
 	fmt.Println(resp.Candidates[0].Content.Parts[0])
 	var genaiText genai.Text
-	var questions interface{}
+	var questions []map[string]interface{}
 	if len(resp.Candidates) > 0 {
 		for _, part := range resp.Candidates[0].Content.Parts {
 			switch p := part.(type) {
@@ -61,12 +61,12 @@ func (g *GeminiService) AnalyzeSymptoms(input SymptomInput, contexts []string) (
 	val, _ := json.Marshal(questions)
 
 	fmt.Println(string(val))
-	return "Diagnosis from Gemini", nil
+	return questions, nil
 }
 
 // IntegrateWithGemini is a convenience wrapper that instantiates GeminiService
 // and delegates to AnalyzeSymptoms.
-func IntegrateWithGemini(input SymptomInput, context []string) (string, error) {
+func IntegrateWithGemini(input SymptomInput, context []string) ([]map[string]interface{}, error) {
 	geminiService := &GeminiService{}
 	return geminiService.AnalyzeSymptoms(input, context)
 }

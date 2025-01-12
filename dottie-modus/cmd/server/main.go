@@ -19,9 +19,9 @@ type UserInput struct {
 }
 
 type AnalysisResult struct {
-	IsNormal        bool     `json:"is_normal"`
-	Abnormalities   []string `json:"abnormalities,omitempty"`
-	Recommendations []string `json:"recommendations,omitempty"`
+	IsNormal        bool                   `json:"is_normal"`
+	Abnormalities   []string               `json:"abnormalities,omitempty"`
+	Recommendations []map[string]interface{} `json:"recommendations,omitempty"`
 }
 
 func analyzeSymptomsHandler(w http.ResponseWriter, r *http.Request) {
@@ -114,7 +114,7 @@ func analyzeSymptomsHandler(w http.ResponseWriter, r *http.Request) {
 	result := AnalysisResult{
 		IsNormal:        isNormal,
 		Abnormalities:   abnormalities,
-		Recommendations: append(recommendations, diagnosis),
+		Recommendations: diagnosis,
 	}
 	response, _ := json.Marshal(result)
 

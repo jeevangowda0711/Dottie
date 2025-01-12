@@ -48,17 +48,17 @@ func __new(id int) unsafe.Pointer {
 		__pins[p]++
 		return p
 	case 8:
-		o := new(Symptom)
-		p := unsafe.Pointer(o)
-		__pins[p]++
-		return p
-	case 9:
 		o := new(neo4j.EagerResult)
 		p := unsafe.Pointer(o)
 		__pins[p]++
 		return p
-	case 10:
+	case 9:
 		o := new(neo4j.Record)
+		p := unsafe.Pointer(o)
+		__pins[p]++
+		return p
+	case 10:
+		o := new(Symptom)
 		p := unsafe.Pointer(o)
 		__pins[p]++
 		return p

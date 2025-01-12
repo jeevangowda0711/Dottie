@@ -1,0 +1,118 @@
+{
+    "normalRanges": [
+      {
+        "name": "MenarcheMedianAge",
+        "min": 12.43,
+        "max": null,
+        "unit": "years"
+      },
+      {
+        "name": "MeanCycleInterval",
+        "min": 32.2,
+        "max": null,
+        "unit": "days"
+      },
+      {
+        "name": "MenstrualCycleInterval",
+        "min": 21,
+        "max": 45,
+        "unit": "days"
+      },
+      {
+        "name": "MenstrualFlowLength",
+        "min": null,
+        "max": 7,
+        "unit": "days"
+      },
+      {
+        "name": "MenstrualProductUse",
+        "min": 3,
+        "max": 6,
+        "unit": "pads_or_tampons_per_day"
+      }
+    ],
+    "conditions": [
+      {
+        "name": "Amenorrhea",
+        "definition": "No menstrual periods for >3 months in a girl with previously regular cycles",
+        "severity": "high",
+        "requiresAttention": true,
+        "action": "Seek Medical Attention"
+      },
+      {
+        "name": "Oligomenorrhea",
+        "definition": "Cycles >45 days apart",
+        "severity": "moderate",
+        "requiresAttention": true,
+        "action": "Monitor and consult a doctor if persists"
+      },
+      {
+        "name": "Polymenorrhea",
+        "definition": "Cycles <21 days apart",
+        "severity": "moderate",
+        "requiresAttention": true,
+        "action": "Monitor and consult a doctor if persists"
+      },
+      {
+        "name": "Menorrhagia",
+        "definition": "Bleeding >7 days or heavy bleeding (soaking >1 pad/tampon per hour)",
+        "severity": "high",
+        "requiresAttention": true,
+        "action": "Seek Medical Attention"
+      }
+    ],
+    "symptoms": [
+      {
+        "name": "Dysmenorrhea",
+        "description": "Painful cramps interfering with daily activities",
+        "severity": "high"
+      },
+      {
+        "name": "Menstrual Migraine",
+        "description": "Migraine headaches occurring during the menstrual cycle",
+        "severity": "moderate"
+      }
+    ],
+    "causes": [
+      "Pregnancy",
+      "Immaturity of the hypothalamic–pituitary–ovarian axis",
+      "Hyperandrogenic anovulation (e.g., polycystic ovary syndrome, congenital adrenal hyperplasia, or androgen-producing tumors)",
+      "Coagulopathy (e.g., von Willebrand disease, platelet function disorders, other bleeding disorders, or hepatic failure)",
+      "Hypothalamic dysfunction (e.g., eating disorders, obesity, underweight, or stress-related hypothalamic dysfunction)",
+      "Hyperprolactinemia",
+      "Thyroid disease",
+      "Primary pituitary disease",
+      "Primary ovarian insufficiency",
+      "Iatrogenic (e.g., secondary to radiation or chemotherapy)",
+      "Medications (e.g., hormonal contraception or anticoagulation therapy)",
+      "Sexually transmitted infections (e.g., cervicitis)",
+      "Malignancy (e.g., estrogen-producing ovarian tumors, androgen-producing tumors, or rhabdomyosarcoma)",
+      "Uterine lesions"
+    ],
+    "abnormalities": [
+      "Have not started within 3 years of thelarche",
+      "Have not started by 14 years of age with signs of hirsutism",
+      "Have not started by 14 years of age with a history or examination suggestive of excessive exercise or eating disorder",
+      "Have not started by 15 years of age",
+      "Occur more frequently than every 21 days or less frequently than every 45 days",
+      "Occur 90 days apart even for one cycle",
+      "Last more than 7 days",
+      "Require frequent pad or tampon changes (soaking more than one every 1–2 hours)",
+      "Are heavy and are associated with a history of excessive bruising or bleeding or a family history of a bleeding disorder"
+    ],
+    "educationalContent": [
+      {
+        "type": "Article",
+        "url": "https://www.acog.org/clinical",
+        "title": "Menstrual Cycle as a Vital Sign",
+        "source": "ACOG"
+      },
+      {
+        "type": "Video",
+        "url": "https://www.acog.org/video",
+        "title": "Understanding Menstrual Health",
+        "source": "ACOG"
+      }
+    ]
+  }
+  

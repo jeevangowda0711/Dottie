@@ -3,9 +3,9 @@
   "connections": {
     "my-neo4j": {
       "type": "neo4j",
-      "dbUri": "your neo4j db uri",
+      "dbUri": "neo4j+s://6a3b9b54.databases.neo4j.io",
       "username": "neo4j",
-      "password": "your neo4j password"
+      "password": "P5oeXDvaOo4zMgPA22sYJcX5wJtpIHNPld7iyJ0_7oc"
     }
   },
   "endpoints": {

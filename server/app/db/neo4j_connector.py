@@ -1,10 +1,12 @@
 import sys
 import os
+import json
 from neo4j import GraphDatabase
-from app.core.config import settings
 
 # Add the server directory to PYTHONPATH for easier imports
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+from app.core.config import settings
 
 class Neo4jConnector:
     """
@@ -41,9 +43,10 @@ class Neo4jConnector:
         required_fields = {
             "Symptom": ["name"],
             "Condition": ["name", "severity", "action"],
-            "Characteristic": ["name", "value"],
-            "EducationalContent": ["type", "url"],
-            "ContextNode": ["description"],
+            "NormalRange": ["name", "min", "max", "unit"],
+            "EducationalContent": ["type", "url", "title", "source"],
+            "Cause": ["name"],
+            "Abnormality": ["description"]
         }
         if label in required_fields:
             missing_fields = [field for field in required_fields[label] if field not in properties]
@@ -111,32 +114,6 @@ class Neo4jConnector:
         all_params = {**remapped_from, **remapped_to, **rel_properties}
         tx.run(query, **all_params)
 
-    def query_conditions_by_symptoms(self, symptoms):
-        """
-        Query conditions related to the given symptoms.
-
-        Args:
-        - symptoms (list): List of symptom names.
-
-        Returns:
-        - list: A list of conditions with severity and actions.
-        """
-        with self.driver.session() as session:
-            return session.execute_read(self._query_conditions_by_symptoms, symptoms)
-
-    @staticmethod
-    def _query_conditions_by_symptoms(tx, symptoms):
-        """
-        Transaction method to find conditions related to symptoms.
-        """
-        query = """
-        MATCH (s:Symptom)-[:IS_SYMPTOM_OF]->(c:Condition)
-        WHERE s.name IN $symptoms
-        RETURN c.name AS condition, c.severity AS severity, c.action AS action
-        """
-        result = tx.run(query, symptoms=symptoms)
-        return [{"condition": record["condition"], "severity": record["severity"], "action": record["action"]} for record in result]
-
     def clear_database(self):
         """
         Clear all nodes and relationships from the database.
@@ -151,46 +128,41 @@ class Neo4jConnector:
         """
         tx.run("MATCH (n) DETACH DELETE n")
 
-    def initialize_graph(self):
+    def initialize_graph(self, data):
         """
-        Populate the database with initial nodes and relationships for the schema.
+        Initialize the graph with nodes and relationships from the provided data.
         """
         self.clear_database()
 
         # Create nodes
-        self.create_node("Symptom", {"name": "Dysmenorrhea"})
-        self.create_node("Symptom", {"name": "Menstrual Migraine"})
-        self.create_node("Condition", {"name": "Menorrhagia", "severity": "high", "action": "Seek Medical Attention"})
-        self.create_node("Condition", {"name": "Oligomenorrhea", "severity": "medium", "action": "Monitor and consult a doctor if persists"})
-        self.create_node("Characteristic", {"name": "Cycle Length", "value": "45 days"})
-        self.create_node("EducationalContent", {"type": "Article", "url": "https://example.com/article1"})
-        self.create_node("ContextNode", {"description": "Severe Cramps + Mood Changes"})
+        for nr in data["normalRanges"]:
+            self.create_node("NormalRange", nr)
+
+        for condition in data["conditions"]:
+            self.create_node("Condition", condition)
+
+        for symptom in data["symptoms"]:
+            self.create_node("Symptom", symptom)
+
+        for cause in data["causes"]:
+            self.create_node("Cause", {"name": cause})
+
+        for abnormality in data["abnormalities"]:
+            self.create_node("Abnormality", {"description": abnormality})
+
+        for content in data["educationalContent"]:
+            self.create_node("EducationalContent", content)
 
         # Create relationships
-        self.create_relationship(
-            "Symptom", {"name": "Dysmenorrhea"},
-            "Condition", {"name": "Menorrhagia"},
-            "IS_SYMPTOM_OF"
-        )
-        self.create_relationship(
-            "Characteristic", {"name": "Cycle Length", "value": "45 days"},
-            "Condition", {"name": "Oligomenorrhea"},
-            "INDICATES"
-        )
-        self.create_relationship(
-            "Condition", {"name": "Menorrhagia"},
-            "EducationalContent", {"type": "Article", "url": "https://example.com/article1"},
-            "LINKED_TO"
-        )
-        self.create_relationship(
-            "ContextNode", {"description": "Severe Cramps + Mood Changes"},
-            "Condition", {"name": "Menstrual Migraine"},
-            "CONTEXTUALIZES"
-        )
+        self.create_relationship("Condition", {"name": "Amenorrhea"}, "Symptom", {"name": "Dysmenorrhea"}, "CAUSES")
+        self.create_relationship("Symptom", {"name": "Dysmenorrhea"}, "Abnormality", {"description": "Last more than 7 days"}, "RELATED_TO")
+        self.create_relationship("Condition", {"name": "Amenorrhea"}, "EducationalContent", {"title": "Menstrual Cycle as a Vital Sign"}, "RELEVANT_TO")
+        self.create_relationship("Symptom", {"name": "Dysmenorrhea"}, "EducationalContent", {"title": "Menstrual Cycle as a Vital Sign"}, "RELEVANT_TO")
+        self.create_relationship("NormalRange", {"name": "MenarcheMedianAge"}, "Condition", {"name": "Amenorrhea"}, "MONITORS")
 
 if __name__ == "__main__":
     connector = Neo4jConnector()
-    connector.initialize_graph()
-    conditions = connector.query_conditions_by_symptoms(["Dysmenorrhea"])
-    print(conditions)
+    with open("/Users/jeevangowda/Desktop/projects/Dottie/dottie-modus/data/acog_guidelines.json") as f:
+        data = json.load(f)
+    connector.initialize_graph(data)
     connector.close()

@@ -1,7 +1,51 @@
+enum Severity {
+    LOW
+    MODERATE
+    HIGH
+}
+
 type Query {
     getSymptomByName(name: String!): Symptom
+    getDiagnosis(input: DiagnosisInput!): DiagnosisOutput
+    getEducationalContent(condition: String!): [Content]
+}
+
+input DiagnosisInput {
+    age: Int!
+    symptoms: [String!]!
+    cycleLength: Int
+    cycleDuration: Int
+    severity: Severity
+    gender: String
+    recurring: Boolean
+}
+
+type DiagnosisOutput {
+    conditions: [Condition!]!
+    recommendations: [String!]!
+    educationalContent: [Content!]!
 }
 
 type Symptom {
     name: String!
+    severity: Severity
+    description: String
+}
+
+type Condition {
+    name: String!
+    severity: Severity!
+    requiresAttention: Boolean!
+    recommendations: [String!]!
+    description: String
+}
+
+type Content {
+    id: ID!
+    type: String! # e.g., "Article", "Research Paper"
+    category: String # e.g., "Education", "Guideline"
+    title: String!
+    source: String! # e.g., "ACOG", "PubMed"
+    url: String! # Link to the actual document
+    abstract: String # Summary of the document
 }
